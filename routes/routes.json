@@ -1,0 +1,467 @@
+[
+    {
+        "name": "Home",
+        "path": "/"
+    },
+    {
+        "name": "SharedScreen",
+        "path": "/sharesession/:id"
+    },
+    {
+        "name": "platforminfo",
+        "path": "/application/version"
+    },
+    {
+        "name": "deviceLabDashboard",
+        "path": "/dashboard/beta"
+    },
+    {
+        "name": "Dashboard",
+        "path": "/dashboard"
+    },
+    {
+        "name": "devices",
+        "path": "/devices"
+    },
+    {
+        "name": "deviceDashboard",
+        "path": "/device/:deviceID/dashboard"
+    },
+    {
+        "name": "deviceSession",
+        "path": "/device/:deviceID/sessions"
+    },
+    {
+        "name": "nodes",
+        "path": "/nodes"
+    },
+    {
+        "name": "nodeDashboard",
+        "path": "/node/:nodeID/dashboard"
+    },
+    {
+        "name": "allJobs",
+        "path": "/jobs"
+    },
+    {
+        "name": "sessions",
+        "path": "/sessions"
+    },
+    {
+        "name": "activities",
+        "path": "/activities"
+    },
+    {
+        "name": "browsers",
+        "path": "/browsers"
+    },
+    {
+        "name": "browserNodeDashboard",
+        "path": "/browserNode/:nodeID/dashboard"
+    },
+    {
+        "name": "failureAnalysis",
+        "path": "/failureAnalysis"
+    },
+    {
+        "name": "runAnalysis",
+        "path": "/runAnalysis"
+    },
+    {
+        "name": "manual",
+        "path": "/manual/:id/old"
+    },
+    {
+        "name": "manual",
+        "path": "/manual/:id"
+    },
+    {
+        "name": "burstmodeprintpreview",
+        "path": "/basicDemo"
+    },
+    {
+        "name": "devicelogs",
+        "path": "/testsession/:id/device/:deviceID/log"
+    },
+    {
+        "name": "debugScreen",
+        "path": "/testsession/:id/debug"
+    },
+    {
+        "name": "multiplex",
+        "path": "/manual"
+    },
+    {
+        "name": "automate",
+        "path": "/automate/:id"
+    },
+    {
+        "path": "/automate"
+    },
+    {
+        "name": "livescreen",
+        "path": "/testsession/:id/livescreen/old"
+    },
+    {
+        "name": "liveScreenBeta",
+        "path": "/testsession/:id/livescreen"
+    },
+    {
+        "name": "TestsessionInUse",
+        "path": "/testsession/:id/inuse"
+    },
+    {
+        "name": "appiumlogs",
+        "path": "/testsession/:id/appiumLogs"
+    },
+    {
+        "name": "sessionLogs",
+        "path": "/testsession/:id/logs"
+    },
+    {
+        "name": "rawframeworklog",
+        "path": "/testcase/:id/result/:resultID/raw/frameworklog"
+    },
+    {
+        "name": "deviceLog",
+        "path": "/devicelog/raw/:id"
+    },
+    {
+        "name": "rawdevicelog",
+        "path": "/testcase/:id/result/:resultID/raw/devicelog"
+    },
+    {
+        "name": "rawANRlog",
+        "path": "/anrlog/raw/:resultID"
+    },
+    {
+        "name": "projects",
+        "path": "/projects"
+    },
+    {
+        "name": "projectsOld",
+        "path": "/projects/old"
+    },
+    {
+        "name": "newproject",
+        "path": "/newproject"
+    },
+    {
+        "name": "ProjectCreation",
+        "path": "/project/new"
+    },
+    {
+        "name": "dashboard",
+        "path": "/project/:id/dashboard"
+    },
+    {
+        "name": "dashboardBeta",
+        "path": "/project/:id/dashboard/beta"
+    },
+    {
+        "name": "testscript",
+        "path": "/project/:id/testscript"
+    },
+    {
+        "name": "TriggerList",
+        "path": "/triggers"
+    },
+    {
+        "name": "trigger",
+        "path": "/trigger/:id"
+    },
+    {
+        "name": "trigger",
+        "path": "/trigger/:id/beta"
+    },
+    {
+        "name": "testsuite",
+        "path": "/project/:id/testsuite"
+    },
+    {
+        "name": "live",
+        "path": "/project/:id/live"
+    },
+    {
+        "name": "liveWithoutProject",
+        "path": "/live"
+    },
+    {
+        "name": "active",
+        "path": "/project/:id/active"
+    },
+    {
+        "name": "activeWithoutProject",
+        "path": "/active"
+    },
+    {
+        "name": "runsettinglist",
+        "path": "/project/:id/runsettings"
+    },
+    {
+        "name": "runsetting",
+        "path": "/project/:id/runsetting/:runsettingID"
+    },
+    {
+        "name": "errorInfoFramework",
+        "path": "/error/:type/:id"
+    },
+    {
+        "name": "projectLevelFailureAnalysis",
+        "path": "/project/:id/failureAnalysis"
+    },
+    {
+        "name": "Dashboard",
+        "path": "/job/:jobID/"
+    },
+    {
+        "name": "Dashboard",
+        "path": "/job/:jobID/dashboard"
+    },
+    {
+        "name": "Dashboard",
+        "path": "/job/:jobID/dashboard/rtpoc"
+    },
+    {
+        "name": "DashboardNew",
+        "path": "/job/:jobID/dashboard/beta"
+    },
+    {
+        "name": "Timeline",
+        "path": "/job/:jobID/timeline"
+    },
+    {
+        "name": "Testcases",
+        "path": "/job/:jobID/testcases"
+    },
+    {
+        "name": "Devices",
+        "path": "/job/:jobID/devices"
+    },
+    {
+        "name": "Classes",
+        "path": "/job/:jobID/classes"
+    },
+    {
+        "name": "Testsessions",
+        "path": "/job/:jobID/testsessions"
+    },
+    {
+        "name": "history",
+        "path": "/job/:jobID/history"
+    },
+    {
+        "name": "Errorinfo",
+        "path": "/job/:jobID/errorinfo"
+    },
+    {
+        "name": "JobMessages",
+        "path": "/job/:jobID/jobMessages"
+    },
+    {
+        "name": "failureAnalysis",
+        "path": "/job/:jobID/failureAnalysis"
+    },
+    {
+        "name": "job",
+        "path": "/job/:jobID"
+    },
+    {
+        "name": "devicequerylist",
+        "path": "/project/:id/devicequeries"
+    },
+    {
+        "name": "devicequery",
+        "path": "/project/:id/devicequery/:deviceQueryID"
+    },
+    {
+        "name": "datasets",
+        "path": "/project/:id/datasets"
+    },
+    {
+        "name": "ProjectJobs",
+        "path": "/project/:id/jobs"
+    },
+    {
+        "name": "ProjectJobsBeta",
+        "path": "/project/:id/jobs/beta"
+    },
+    {
+        "name": "jobdetail",
+        "path": "/project/:id/run/:jobID/detail"
+    },
+    {
+        "name": "testcases",
+        "path": "/project/:id/run/:jobID/testcases"
+    },
+    {
+        "name": "jobTestsession",
+        "path": "/project/:id/run/:jobID/testsessions"
+    },
+    {
+        "name": "sessionDetail",
+        "path": "/project/:id/run/:jobID/frameworksession/:testsessionID"
+    },
+    {
+        "path": "/project/:id/run/:jobID/appiumsession/:testsessionID"
+    },
+    {
+        "name": "sessionDetail",
+        "path": "/frameworksession/:testsessionID"
+    },
+    {
+        "path": "/appiumsession/:testsessionID"
+    },
+    {
+        "name": "jobtimeline",
+        "path": "/project/:id/run/:jobID/timeline"
+    },
+    {
+        "name": "testcaseDetail",
+        "path": "/project/:id/run/:jobID/testcase/:testcaseID"
+    },
+    {
+        "name": "testcaseDetail",
+        "path": "/testcase/:testcaseID"
+    },
+    {
+        "name": "instancerawlog",
+        "path": "/instance/:id/log"
+    },
+    {
+        "name": "deviceSelection",
+        "path": "/project/:id/newSession"
+    },
+    {
+        "name": "deviceSelection",
+        "path": "/project/:id/testsuite/:testsuiteID/newSession"
+    },
+    {
+        "name": "deviceSelection",
+        "path": "/startsession/new"
+    },
+    {
+        "name": "AllJobsBeta",
+        "path": "/jobs/beta"
+    },
+    {
+        "name": "JobAnalysis",
+        "path": "/project/:id/jobAnalysis"
+    },
+    {
+        "name": "node",
+        "path": "/admin/node"
+    },
+    {
+        "name": "browsers",
+        "path": "/admin/browsers"
+    },
+    {
+        "name": "deviceSubRoute",
+        "path": "/admin/device/:id/:subRoute"
+    },
+    {
+        "name": "deviceID",
+        "path": "/admin/device/:id"
+    },
+    {
+        "name": "device",
+        "path": "/admin/device"
+    },
+    {
+        "name": "userSubRoute",
+        "path": "/admin/user/:id/:subRoute"
+    },
+    {
+        "name": "userID",
+        "path": "/admin/user/:id"
+    },
+    {
+        "name": "user",
+        "path": "/admin/user"
+    },
+    {
+        "name": "profile",
+        "path": "/admin/profile"
+    },
+    {
+        "name": "project",
+        "path": "/admin/project"
+    },
+    {
+        "name": "group",
+        "path": "/admin/group"
+    },
+    {
+        "name": "groupclassic",
+        "path": "/admin/group/classic"
+    },
+    {
+        "name": "model",
+        "path": "/admin/model"
+    },
+    {
+        "name": "session",
+        "path": "/admin/session"
+    },
+    {
+        "name": "bugtracker",
+        "path": "/admin/bugtracker"
+    },
+    {
+        "name": "integrations",
+        "path": "/admin/integrations"
+    },
+    {
+        "name": "dbmaintenance",
+        "path": "/admin/dbmaintenance"
+    },
+    {
+        "name": "storage",
+        "path": "/admin/storage"
+    },
+    {
+        "name": "contact",
+        "path": "/admin/contact"
+    },
+    {
+        "name": "settings",
+        "path": "/admin/settings"
+    },
+    {
+        "name": "runsettings",
+        "path": "/admin/runsettings"
+    },
+    {
+        "name": "activity",
+        "path": "/admin/activity"
+    },
+    {
+        "name": "maintenance",
+        "path": "/admin/maintenance"
+    },
+    {
+        "name": "info",
+        "path": "/admin/info"
+    },
+    {
+        "name": "ioshelper",
+        "path": "/admin/ioshelper"
+    },
+    {
+        "name": "admin",
+        "path": "/admin"
+    },
+    {
+        "name": "ganttChartViewPage",
+        "path": "/gantt-chart-view"
+    },
+    {
+        "name": "Resources",
+        "path": "/resources/:resource"
+    },
+    {
+        "name": "pagenotfound",
+        "path": "*"
+    }
+]
