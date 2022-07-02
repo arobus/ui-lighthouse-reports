@@ -19,7 +19,7 @@ if (!fs.existsSync(config.reportsFolder)) {
 
 (async () => {
 
-    const baseURL = 'https://9bae-122-171-18-119.in.ngrok.io/';
+    const baseURL = 'https://9bae-122-171-18-119.in.ngrok.io';
     const username = 'admin@robustest.com';
     const password = 'NU#$#%dfg$D5@#$Q#%7KKM35#%jy0';
 
