@@ -1,7 +1,7 @@
 const chromeLauncher = require('chrome-launcher');
 const puppeteer = require('puppeteer');
 const lighthouse = require('lighthouse');
-const config = require('lighthouse/lighthouse-core/config/lr-desktop-config.js');
+const lightHouseConfig = require('lighthouse/lighthouse-core/config/lr-desktop-config.js');
 const request = require('request');
 const util = require('util');
 const fs = require('fs');
@@ -9,6 +9,12 @@ const fs = require('fs');
 
 // Get routes
 const routes = require("./routes/routes.json");
+
+const config = require("./config.json");
+
+if (!fs.existsSync(config.reportsFolder)) {
+    fs.mkdirSync(config.reportsFolder);
+}
 
 
 (async () => {
@@ -28,7 +34,6 @@ const routes = require("./routes/routes.json");
         },
         chromeFlags: ['--headless', '--disable-mobile-emulation', '--no-sandbox', '--disable-setuid-sandbox']
     };
-    console.log('opts', opts)
 
     // Launch chrome using chrome-launcher
     const chrome = await chromeLauncher.launch(opts);
@@ -38,7 +43,6 @@ const routes = require("./routes/routes.json");
     const resp = await util.promisify(request)(`http://localhost:${opts.port}/json/version`);
     const { webSocketDebuggerUrl } = JSON.parse(resp.body);
     const browser = await puppeteer.connect({ browserWSEndpoint: webSocketDebuggerUrl });
-    console.log('logging in');
     // login
     let page = await browser.newPage();
     await page.goto(`${baseURL}/auth/login`, { waitUntil: 'load' });
@@ -48,16 +52,6 @@ const routes = require("./routes/routes.json");
     await page.waitForNavigation({ waitUntil: 'networkidle2' });
     page = (await browser.pages())[0];
     await runLightHouseForRoutes(baseURL, page, opts, routes);
-
-
-    // // Visit a subject
-    // await page.goto(subjectsURL, {waitUntil: 'networkidle2'});
-    // await page.evaluate(() => {
-    //     document.querySelector('a[data-track-label=\'Cancer\']').click();
-    // });
-    // await page.waitForNavigation();
-    // await runLighthouseForURL(page.url(), opts, "Nature Subjects Cancer");
-
 
     await browser.disconnect();
     await chrome.kill();
@@ -71,15 +65,11 @@ const routes = require("./routes/routes.json");
 async function runLightHouseForRoutes(baseURL, page, opts, routes) {
     const reports = {};
     const date = new Date().getTime();
-    // Visit Nature.com
-
-    // console.log('page.url', page.url());
     for (const route of routes) {
         if (route.path.indexOf(":") == -1) {
             try {
                 await page.setViewport({ width: 1600, height: 900 });
                 await page.goto(`${baseURL}/#${route.path}`, { waitUntil: 'networkidle2' });
-                console.log('page.url', page.url());
                 const result = await runLighthouseForURL(page.url(), opts, date, route.name ? route.name : route.path.replace(/\//g,'') + "-" + date);
                 reports[route.name] = result;
             } catch (err) {
@@ -88,7 +78,6 @@ async function runLightHouseForRoutes(baseURL, page, opts, routes) {
         }
     }
     fs.writeFileSync(`reports/report-${date}.json`, JSON.stringify(reports, null, 4));
-
 }
 
 
@@ -101,10 +90,7 @@ async function runLighthouseForURL(pageURL, opts, reportDate, reportName) {
         fs.mkdirSync(reportFolder);
     }
     const reportPath = `${reportFolder}/${reportNameForFile}.html`;
-
-
-
-    const runnerResult = await lighthouse(pageURL, opts, config).then(results => results);
+    const runnerResult = await lighthouse(pageURL, opts, lightHouseConfig).then(results => results);
 
     // `.report` is the HTML report as a string
     const reportHtml = runnerResult.report;

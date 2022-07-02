@@ -1,0 +1,33 @@
+<% 
+Date.prototype.toString = function() { 
+    const padZero=(value)=> value.toString().padStart(2, "0");
+    return `${padZero(this.getDate())} ${padZero(this.getMonth())} ${this.getFullYear()} ${padZero(this.getHours())}:${padZero(this.getMinutes())}:${padZero(this.getSeconds())}`
+}
+ _setGaugeArc = function (score) {
+    try {
+        let style = {};
+        const n = 2 * Math.PI * Number(56)
+            , r = Number(8)
+            , o = .25 * r / n;
+        style.transform = `rotate(${360 * o - 90}deg)`;
+        let i = score * n - r / 2;
+        0 === score && (style.opacity = "0"),
+            1 === score && (i = n),
+        style.strokeDashArray =  `${Math.max(i, 0)} ${n}`;
+        return style;
+    } catch (err) {
+        console.error('err', err);
+    }
+}
+
+_getGaugeClass = function (score) {
+    if (score >= 0.8) {
+        return " lh-gauge__wrapper--pass";
+    } else if (score >= 0.5 && score < 0.8 ) {
+        return " lh-gauge__wrapper--average";
+    } else {
+        return " lh-gauge__wrapper--fail";
+    }
+   
+}
+%>

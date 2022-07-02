@@ -1,0 +1,9 @@
+<ul>
+    <% Object.keys(reports).forEach((key)=> { %>
+        <li>
+            <a href="?reportDate=<%= key %>">
+                <%= new Date(parseInt(key)).toString() %>
+            </a>
+        </li>
+        <% }) %>
+</ul>
