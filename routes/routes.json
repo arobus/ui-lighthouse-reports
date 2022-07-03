@@ -76,10 +76,6 @@
         "path": "/manual/:id"
     },
     {
-        "name": "burstmodeprintpreview",
-        "path": "/basicDemo"
-    },
-    {
         "name": "devicelogs",
         "path": "/testsession/:id/device/:deviceID/log"
     },
