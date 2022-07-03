@@ -25,7 +25,7 @@ if (!fs.existsSync(config.reportsFolder)) {
 
     const opts = {
         //chromeFlags: ['--headless'],
-        logLevel: 'info',
+        logLevel: 'error',
         output: 'html',
         disableDeviceEmulation: true,
         defaultViewport: {
@@ -68,6 +68,7 @@ async function runLightHouseForRoutes(baseURL, page, opts, routes) {
     for (const route of routes) {
         if (route.path.indexOf(":") == -1) {
             try {
+                console.log(`Running lighthouse for ${baseURL}/#${route.path}`);
                 await page.setViewport({ width: 1600, height: 900 });
                 await page.goto(`${baseURL}/#${route.path}`, { waitUntil: 'networkidle2' });
                 const result = await runLighthouseForURL(page.url(), opts, date, route.name ? route.name : route.path.replace(/\//g,'') + "-" + date);
@@ -97,7 +98,7 @@ async function runLighthouseForURL(pageURL, opts, reportDate, reportName) {
     fs.writeFileSync(reportPath, reportHtml);
 
     // `.lhr` is the Lighthouse Result as a JS object
-    console.log('Report is done for', runnerResult.lhr.finalUrl);
+    console.log('Report is done for', pageURL);
     console.log('Performance score was', runnerResult.lhr.categories.performance.score * 100);
     return {
         reportPath,
