@@ -27,6 +27,11 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run script
         run: HTML_MODE=browser node index.js
+        
+      - uses: actions/upload-artifact@v3
+        with:
+          name: report-properties
+          path: report.properties
     
       - name: Create report archive
         run: zip -r report.zip index.html reports/
