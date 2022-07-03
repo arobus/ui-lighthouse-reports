@@ -1,3 +1,7 @@
 reports
 report*.json
 node_modules
+index.html
+lhreport.html
+*copy*
+report.zip

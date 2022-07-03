@@ -1,7 +1,7 @@
 <% 
 Date.prototype.toString = function() { 
     const padZero=(value)=> value.toString().padStart(2, "0");
-    return `${padZero(this.getDate())} ${padZero(this.getMonth())} ${this.getFullYear()} ${padZero(this.getHours())}:${padZero(this.getMinutes())}:${padZero(this.getSeconds())}`
+    return `${padZero(this.getDate())} ${padZero(this.getMonth() + 1)} ${this.getFullYear()} ${padZero(this.getHours())}:${padZero(this.getMinutes())}:${padZero(this.getSeconds())}`
 }
  _setGaugeArc = function (score) {
     try {
@@ -28,6 +28,5 @@ _getGaugeClass = function (score) {
     } else {
         return " lh-gauge__wrapper--fail";
     }
-   
 }
 %>
