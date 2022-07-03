@@ -6,7 +6,9 @@ name: CI
 on:
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '0 10 * * *'
+    # Run the schedule around 9:45 AM IST. Some times the schedule is delayed by 10-15mins
+    # Avg run time is 17 minutes. So before 10:30AM there should be an output
+    - cron:  '15 4 * * *'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
