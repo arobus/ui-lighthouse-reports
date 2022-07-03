@@ -1,21 +1,29 @@
-<%- include('util'); -%>
+<%- include('util'); %>
 
 <div>
-  <h3>Lighthouse Report for <%=new Date(parseInt(reportDate)).toString() %>
+  <h3>Lighthouse Report for <%= new Date(parseInt(reportDate)).toString() %>
   </h3>
 </div>
 <ul>
   <% Object.keys(report).forEach((key)=> { %>
   <% var style = _setGaugeArc(report[key].score / 100); %>
   <li class="report-component-score">
+    <% if (htmlMode == 'node') { %>
     <a href="?reportDate=<%= reportDate %>&component=<%= key %>">
       <span> Component: <%= key %></span>
     </a>
+    <% } else { %>
+    <a target="_blank" href="./<%= report[key].reportPath %>">
+            <span> Component: <%= key %></span>
+        </a>
+    <% } %>
     <a class="lh-gauge__wrapper <%= _getGaugeClass(report[key].score / 100) %>">
-      <div class="lh-gauge__svg-wrapper"> <svg class="lh-gauge" viewBox="0 0 120 120">
+      <div class="lh-gauge__svg-wrapper">
+        <svg class="lh-gauge" viewBox="0 0 120 120">
           <circle class="lh-gauge-base" r="56" cx="60" cy="60" stroke-width="8"></circle>
           <circle class="lh-gauge-arc" r="56" cx="60" cy="60" stroke-width="8" style="transform: <%= style.transform %>; stroke-dasharray: <%= style.strokeDashArray %>; opacity: <%= style.opacity; %>"></circle>
-        </svg> </div>
+        </svg>
+      </div>
       <div class="lh-gauge__percentage">
         <%= report[key].score %>
       </div>

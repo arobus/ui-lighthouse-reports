@@ -5,7 +5,17 @@ const lightHouseConfig = require('lighthouse/lighthouse-core/config/lr-desktop-c
 const request = require('request');
 const util = require('util');
 const fs = require('fs');
+const ejs = require('ejs');
+const path = require('path');
 
+const parentResolveInclude = ejs.resolveInclude;
+
+ejs.resolveInclude = function(name, filename, isDir) {
+    if (!path.extname(name)) {
+      name += ".ejs.html";
+    }
+    return parentResolveInclude(name, filename, isDir);
+  }
 
 // Get routes
 const routes = require("./routes/routes.json");
@@ -63,7 +73,7 @@ if (!fs.existsSync(config.reportsFolder)) {
 });
 
 async function runLightHouseForRoutes(baseURL, page, opts, routes) {
-    const reports = {};
+    const report = {};
     const date = new Date().getTime();
     for (const route of routes) {
         if (route.path.indexOf(":") == -1) {
@@ -72,13 +82,25 @@ async function runLightHouseForRoutes(baseURL, page, opts, routes) {
                 await page.setViewport({ width: 1600, height: 900 });
                 await page.goto(`${baseURL}/#${route.path}`, { waitUntil: 'networkidle2' });
                 const result = await runLighthouseForURL(page.url(), opts, date, route.name ? route.name : route.path.replace(/\//g,'') + "-" + date);
-                reports[route.name] = result;
+                report[route.name] = result;
             } catch (err) {
                 console.error('err', err);
             }
         }
     }
-    fs.writeFileSync(`reports/report-${date}.json`, JSON.stringify(reports, null, 4));
+    fs.writeFileSync(`reports/report-${date}.json`, JSON.stringify(report, null, 4));
+    if (process.env.HTML_MODE && process.env.HTML_MODE == 'browser') {
+        try {
+            const result = await ejs.renderFile('views/report.ejs.html', {
+                reportDate: date,
+                report,
+                htmlMode: process.env.HTML_MODE ? process.env.HTML_MODE : 'node'
+            }, { root: path.join(__dirname, 'views') });
+            fs.writeFileSync('index.html', result);
+        } catch (err) {
+            console.error('err', err);
+        }
+    } 
 }
 
 

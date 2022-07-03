@@ -3,6 +3,7 @@ const app = new koa();
 const render = require('koa-ejs');
 const fs = require('fs');
 const path = require('path');
+const ejs = require('ejs');
 
 
 const config = require('./config.json');
@@ -35,18 +36,20 @@ app.use(async (ctx) => {
         const { reportDate, component } = ctx.request.query;
         try {
             const reportJSON = JSON.parse(fs.readFileSync(`${config.reportsFolder}/report-${reportDate}.json`));
-            
+
             if (component && reportJSON[component]) {
                 const file = fs.createReadStream(reportJSON[component].reportPath);
                 ctx.type = 'html';
                 ctx.body = file;
             } else {
-                await ctx.render('report', {
+                const data = {
                     report: reportJSON,
-                    reportDate
-                });
-            }
+                    reportDate,
+                    htmlMode: process.env.HTML_MODE ? process.env.HTML_MODE : 'node'
+                }
 
+                await ctx.render('report', data);
+            }
             return;
         } catch (err) {
             console.error('error', err);
