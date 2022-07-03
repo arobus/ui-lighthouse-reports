@@ -39,22 +39,27 @@ async function webhook(data) {
                         "widgets": [
                             {
                                 "textParagraph": {
-                                    "text": `<b>Avg. Performance Score</b> is <font color="#ff0000">${data.AVG_SCORE}</font>,<br>Least Performant Component / Page is <font color="#0000ff">${data.LEAST_SCORE_COMPONENT}</font> with ${data.LEAST_SCORE_VALUE}`
+                                    "text": `<b>Avg. Performance Score</b> is <font color="#ff0000">${data.AVG_SCORE}</font>,<br><b>Least Performant Component / Page</b> is <font color="#0000ff">${data.LEAST_SCORE_COMPONENT}</font> with <font color="#ff0000">${data.LEAST_SCORE_VALUE}</font>`
                                 }
                             },
                             {
                                 "buttons": [
                                     {
                                         "textButton": {
-                                            "text": "DOWNLOAD REPORT",
+                                            "text": "VIEW RUN",
                                             "onClick": {
                                                 "openLink": {
-                                                    "url": data.ARTIFACT_URL
+                                                    "url": `https://github.com/arobus/ui-lighthouse-reports/actions/runs/${data.RUN_ID}`
                                                 }
                                             }
                                         }
                                     }
                                 ]
+                            },
+                            {
+                                "textParagraph": {
+                                    "text": `<i>You can download an html version of the report from the run page. Look for Artifacts section -> Click on report-artifact </i>`
+                                }
                             }
                         ]
                     }
