@@ -28,6 +28,9 @@ jobs:
           name: report-properties
       - name: Load properties file into environment
         run: cp report.properties .env
+        
+      - name: Update env with secrets
+        run: echo $GH_API_TOKEN >> .env
 
       # Runs a set of commands using the runners shell
       - name: Run script
