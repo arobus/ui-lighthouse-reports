@@ -9,13 +9,17 @@ const ejs = require('ejs');
 const path = require('path');
 
 const parentResolveInclude = ejs.resolveInclude;
+Date.prototype.toString = function () {
+    const padZero = (value) => value.toString().padStart(2, "0");
+    return `${padZero(this.getDate())} ${padZero(this.getMonth() + 1)} ${this.getFullYear()} ${padZero(this.getHours())}:${padZero(this.getMinutes())}:${padZero(this.getSeconds())}`
+}
 
-ejs.resolveInclude = function(name, filename, isDir) {
+ejs.resolveInclude = function (name, filename, isDir) {
     if (!path.extname(name)) {
-      name += ".ejs.html";
+        name += ".ejs.html";
     }
     return parentResolveInclude(name, filename, isDir);
-  }
+}
 
 // Get routes
 const routes = require("./routes/routes.json");
@@ -72,8 +76,41 @@ if (!fs.existsSync(config.reportsFolder)) {
     process.exit(1);
 });
 
+function getLowestScore(keys, array) {
+    // There's no real number bigger than plus Infinity
+    let lowest = Number.POSITIVE_INFINITY;
+    let highest = Number.NEGATIVE_INFINITY;
+    let tmp;
+    let key = null;
+    for (var i = keys.length - 1; i >= 0; i--) {
+        tmp = array[keys[i]].score;
+        if (tmp < lowest) {
+            lowest = tmp;
+            key = keys[i];
+        }
+        if (tmp > highest) highest = tmp;
+    }
+    return { value: lowest, key };
+}
+
+const camelToSnakeCase = str => str.replace(/[A-Z]/g, letter => `_${letter}`).toUpperCase();
+
+
+function createPropertiesFile(fileName, data) {
+    if (fs.existsSync(fileName)) {
+        fs.truncateSync(fileName, 0)
+    }
+    var logger = fs.createWriteStream(fileName, {
+        flags: 'a' // 'a' means appending (old data will be preserved)
+    })
+    Object.keys(data).forEach((key) => {
+        logger.write(`${camelToSnakeCase(key.toString())}=${data[key]}\n`);
+    })
+    logger.end();
+}
+
 async function runLightHouseForRoutes(baseURL, page, opts, routes) {
-    const report = {};
+    const report = { avgScore: 0, leastScore: null, pages: {} };
     const date = new Date().getTime();
     for (const route of routes) {
         if (route.path.indexOf(":") == -1) {
@@ -81,26 +118,40 @@ async function runLightHouseForRoutes(baseURL, page, opts, routes) {
                 console.log(`Running lighthouse for ${baseURL}/#${route.path}`);
                 await page.setViewport({ width: 1600, height: 900 });
                 await page.goto(`${baseURL}/#${route.path}`, { waitUntil: 'networkidle2' });
-                const result = await runLighthouseForURL(page.url(), opts, date, route.name ? route.name : route.path.replace(/\//g,'') + "-" + date);
-                report[route.name] = result;
+                const result = await runLighthouseForURL(page.url(), opts, date, route.name ? route.name : route.path.replace(/\//g, '') + "-" + date);
+                report.pages[route.name] = result;
+                
             } catch (err) {
                 console.error('err', err);
             }
         }
     }
+
+    // Get Avg Score and Least Scored
+    const keys = Object.keys(report.pages);
+    report.avgScore = parseInt(keys.map(k => report.pages[k].score).reduce((sum, value) => {
+        return sum + value;
+    }, 0) / keys.length);
+    report.leastScore = getLowestScore(keys, report.pages);
     fs.writeFileSync(`reports/report-${date}.json`, JSON.stringify(report, null, 4));
     if (process.env.HTML_MODE && process.env.HTML_MODE == 'browser') {
         try {
             const result = await ejs.renderFile('views/report.ejs.html', {
                 reportDate: date,
-                report,
+                report: report.pages,
                 htmlMode: process.env.HTML_MODE ? process.env.HTML_MODE : 'node'
             }, { root: path.join(__dirname, 'views') });
             fs.writeFileSync('index.html', result);
+            createPropertiesFile('report.properties', {
+                avgScore: report.avgScore,
+                leastScoreComponent: report.leastScore.key,
+                leastScoreValue: report.leastScore.value,
+                reportDate: date.toString()
+            })
         } catch (err) {
             console.error('err', err);
         }
-    } 
+    }
 }
 
 
@@ -127,4 +178,25 @@ async function runLighthouseForURL(pageURL, opts, reportDate, reportName) {
         score: runnerResult.lhr.categories.performance.score * 100
     }
 
+}
+
+/**
+ * Sends asynchronous message into Google Chat
+ * @return{obj} response
+ */
+async function webhook(lowestScore, avgScore) {
+    const fetch = require('node-fetch');
+    const webhookURL = 'https://chat.googleapis.com/v1/spaces/AAAAGCYeSRY/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=u9IG_MuTBXw-tnqupPrPNinY2spKFcRBDp6dSldGUAw%3D';
+
+    const data = JSON.stringify({
+        'text': 'Hello from a Node script!',
+    });
+    let resp = await fetch(webhookURL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: data,
+    })
+    return resp;
 }

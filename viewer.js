@@ -37,13 +37,13 @@ app.use(async (ctx) => {
         try {
             const reportJSON = JSON.parse(fs.readFileSync(`${config.reportsFolder}/report-${reportDate}.json`));
 
-            if (component && reportJSON[component]) {
-                const file = fs.createReadStream(reportJSON[component].reportPath);
+            if (component && reportJSON.pages[component]) {
+                const file = fs.createReadStream(reportJSON.pages[component].reportPath);
                 ctx.type = 'html';
                 ctx.body = file;
             } else {
                 const data = {
-                    report: reportJSON,
+                    report: reportJSON.pages,
                     reportDate,
                     htmlMode: process.env.HTML_MODE ? process.env.HTML_MODE : 'node'
                 }
@@ -55,10 +55,7 @@ app.use(async (ctx) => {
             console.error('error', err);
         }
 
-
-    }
-
-    else {
+    } else {
         try {
             let reportsJSON = await readdirAsync(config.reportsFolder);
             // filter hidden files like .DS_Store
@@ -68,7 +65,7 @@ app.use(async (ctx) => {
                     try {
                         const reportJSON = JSON.parse(fs.readFileSync(`${config.reportsFolder}/${report}`));
 
-                        reports[report.replace("report-", "").replace(".json", "")] = reportJSON;
+                        reports[report.replace("report-", "").replace(".json", "")] = reportJSON.pages;
                     } catch (err) {
                         console.error('error parsing json file', err);
                     }
