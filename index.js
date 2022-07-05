@@ -8,6 +8,10 @@ const fs = require('fs');
 const ejs = require('ejs');
 const path = require('path');
 
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 const parentResolveInclude = ejs.resolveInclude;
 Date.prototype.toString = function () {
     const padZero = (value) => value.toString().padStart(2, "0");
@@ -33,10 +37,9 @@ if (!fs.existsSync(config.reportsFolder)) {
 
 (async () => {
 
-    const baseURL = 'https://9bae-122-171-18-119.in.ngrok.io';
-    const username = 'admin@robustest.com';
-    const password = 'NU#$#%dfg$D5@#$Q#%7KKM35#%jy0';
-
+    const baseURL = process.env.RT_URL;
+    const username = process.env.RT_USER_NAME;
+    const password = process.env.RT_USER_PASS;
     const opts = {
         //chromeFlags: ['--headless'],
         logLevel: 'error',
